@@ -13,33 +13,40 @@ public:
 
     RSA(int p, int q)
     {
-        this->p=p;
-        this->q=q;
+        this->p = p;
+        this->q = q;
     }
-    int n()
+
+    long n()
     {
-        return p*q;
+        return p * q;
     }
+
     int m()
     {
-        return (p-1)*(q-1);
+        return (p - 1) * (q - 1);
     }
+
     int e()
     {
         int e;
         do
         {
-            e=rand()%temp;
+            //int degree = (int)(random() % 5);
+            //e = (1 << degree) + 1;
+            e = 3;
         }
-        while(nod(e,m())>1);
+        while(nod(e, m()) > 1);
         return e;
-
     }
+
     int d()// работает если существует обратный элемент
     {
-        int res=0;
-        while(e()*res%(m())!=1)
-        res++;
+        int res = 0;
+        int e = this->e();
+        int m = this->m();
+        while((e * res) % m != 1)
+            res++;
         return res;
     }
 
@@ -48,10 +55,26 @@ public:
         while (a && b)
 
             if (a >= b)
-               a %= b;
+                a %= b;
             else
-               b %= a;
-    return a | b;
+                b %= a;
+        return a | b;
+    }
+
+    long encode(int text)
+    {
+        long res = 1;
+        for (int n = this->n(), e = this->e(), i = 0; i < e; ++i)
+            res = (res * text) % n;
+        return res;
+    }
+
+    int decode(long ctext)
+    {
+        int res = 1;
+        for (int n = this->n(), d = this->d(), i = 0; i < d; ++i)
+            res = (res * ctext) % n;
+        return res;
     }
 };
 
@@ -59,16 +82,16 @@ public:
 int main()
 {
     int p,q;
-    p=3557;
-    q=2579;
+    p = 3557;
+    q = 2579;
     //cin>>p>>q;
-    RSA rsa(p,q);
+    RSA rsa(p, q);
     int text;
-    cin>>text;
-    int cod = fmod(pow(text,rsa.e()),rsa.n());
-    cout<<cod<<endl;
-    int decod = fmod(pow(cod,rsa.d()),rsa.n());
-    cout<<decod<<endl;
+    cin >> text;
+    long cod = rsa.encode(text);
+    cout << cod << endl;
+    int decod = rsa.decode(cod);
+    cout << decod << endl;
 
 
     return 0;
