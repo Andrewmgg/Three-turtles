@@ -1,6 +1,9 @@
 /bin
-/ob
+/obj
+*/bin*
+*/obj*
 *.cbp
 *.depend
 *.o
+*.layout
 *.obj
