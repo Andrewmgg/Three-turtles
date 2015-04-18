@@ -40,17 +40,18 @@ string caesar(string s, int k) {
 double summ() {
     double s = 0;
     for (int i = 0; i < 26; ++i)
-        s += abs(stdC[i] - cnt[i]);
+        s += abs(stdC[i] - cnt[i])*cnt[i];
     return s;
 }
 
 int main() {
     string s;
-    cin >> s;
+    std::getline(std::cin, s);
+    //cin >> s;
     string t;
     
     double mins = 100500;
-    int mink = -1;
+    int mink = 0;
     
     for (int i = 0; i < 26; i++) {
         t = caesar(s, i);
