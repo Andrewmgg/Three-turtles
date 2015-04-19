@@ -4,9 +4,9 @@
 
 using namespace std;
 
-long par(long input)
+int par(unsigned long long input)
 {
-    long res =0;
+    int res =0;
     while(input)
     {
         res += (input & 1);
@@ -42,8 +42,8 @@ long f_euler_rec(long n)
 }
 
 
-long binpow (long a, long n) {
-	long res = 1;
+unsigned long long binpow (unsigned long long a, unsigned long long n) {
+	unsigned long long res = 1;
 	while (n) {
 		if (n & 1)
 			res = (res * a);
@@ -53,11 +53,11 @@ long binpow (long a, long n) {
 	return res;
 }
 
-long powermod(long base, long exponent, long modulus) {
+unsigned long long powermod(unsigned long long base, unsigned long long exponent, unsigned long long modulus) {
     if (base < 1 || exponent < 0 || modulus < 1)
         return -1;
 
-    long result = 1;
+    unsigned long long result = 1;
     while (exponent > 0) {
        if (exponent & 1) {
            result = (result * base) % modulus;
@@ -76,27 +76,40 @@ int main()
 
     if((p < MAX) && (q < MAX) && (p % 4 == 3) && (q % 4 == 3) && (nod(f_euler_rec(p-1), f_euler_rec(q-1)) <= 3))
     {
-        long m = p * q;
-        long array[8 * r];
-        long x = x0;
-        x = powermod(x0, binpow(2, 8 * k), m);
-        //for(long i = 0; i < 8 * k; ++i)
-        //{
-        //    x = (x * x) % m;
-        //}
+        unsigned long long m = p * q;
+        unsigned char array[r];
+        for (int i = 0; i < r; ++i)
+            array[i] = 0;
+        unsigned long long x = x0;
+        //x = powermod(x0, binpow(2, 8 * k), m);
+        for(long i = 0; i < 8 * k; ++i)
+        {
+            x = (x * x) % m;
+        }
 
         for(long i = 8 * k; i < 8 * (k + r); ++i)
         {
-            array[i - 8 * k] = par(x);
-            cout << array[i - 8 * k];
+            int temp = par(x);
+            array[(i - 8 * k) / 8] += temp << (7 - (i % 8));
+            cout << temp;
             x = (x * x) % m;
         }
 
         cout << endl;
 
-        for(long i = 0; i < 8 * r; i += 4)
+        for(long i = 0; i < r; i++)
         {
-            int code = (array[i] << 3) + (array[i + 1] << 2) + (array[i + 2] << 1) + array[i + 3];
+            int code = (array[i] & 0xF0) >> 4;
+            if (code >= 10)
+            {
+                code -= 10;
+                cout << (char)('a' + code);
+            } else
+            {
+                cout << code;
+            }
+
+            code = (array[i] & 0x0F);
             if (code >= 10)
             {
                 code -= 10;
