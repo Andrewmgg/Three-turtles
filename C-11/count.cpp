@@ -19,6 +19,12 @@ char h2c(char h) {
     return h;
 }
 
+char toupper(char c) {
+    if (c >= 'a' && c <= 'z')
+        c += 'A' - 'a';
+    return c;
+}
+
 string Vizener(char* s, int sL, char* key, int keyL) {
     string res = "";
     int j = 0;
@@ -29,26 +35,6 @@ string Vizener(char* s, int sL, char* key, int keyL) {
     }
     
     return res;
-}
-
-bool isAKey(char* s, int sL, int* key, int keyL) {
-    res = "";
-    int i = 0;
-    int j = 0;
-    while (i < sL) {
-        if (key[j] == -1) {
-            i += keyL-j;
-            j = 0;
-            continue;
-        }
-        char dc = s[i] ^ (char)(key[j]);
-        if (!isprint(dc)) {
-            return false;
-        }
-        ++i;
-        j = (j + 1) % keyL;
-    }
-    return true;
 }
 
 double summ() {
@@ -109,6 +95,11 @@ int main() {
     }
     
     cout << maxL << endl;
+    
+    
+    
+    
+    // подбираем ключ
     char key[13];
     
     for (int i = 0; i < keyL; i++) {
@@ -122,6 +113,7 @@ int main() {
                 ++aL;
             }
         }
+        
         // ищем наболее подходящий символ
         double mins = 100500;
         char mK = 0;
@@ -129,20 +121,22 @@ int main() {
         for(int k = 0; k < 256; k++) {
             for(int j = 0; j < 26; j++)
                 cnt[j] = 0;
-                
+            double c;
+            
             for(int j = 0; j < aL; j++) {
                 char c = a[j] ^ k;
-                if ( !isprint(c) ) k++; // если хоть одна буква - непечатная, то ключ негодный
+                if ( !isprint(c) ) goto label; // если хоть одна буква - непечатная, то ключ негодный
                 c = toupper(c);
                 if ( c >= 'A' && c <= 'Z' )
-                    cnt[ toupper(c) ] += 100.0 / stL;
+                    cnt[ c ] += 100.0 / stL;
             }
                 
-            double c = summ();
+            c = summ();
             if (c < mins) {
                 mins = c;
                 mK = k;
             }
+        label: if (0) {}
         }
         
         cout << mins << endl;
