@@ -4,9 +4,9 @@
 
 using namespace std;
 
-int par(int input)
+long par(long input)
 {
-    int res =0;
+    long res =0;
     while(input)
     {
         res += (input & 1);
@@ -16,7 +16,7 @@ int par(int input)
     else return 0;
 }
 
-int nod(int a, int b)
+long nod(long a, long b)
 {
     while (a && b) {
         if (a >= b)
@@ -27,10 +27,10 @@ int nod(int a, int b)
     return a | b;
 }
 
-int f_euler_rec(int n)
+long f_euler_rec(long n)
 {
-	int result = n;
-	for (int i=2; i*i<=n; ++i)
+	long result = n;
+	for (long i=2; i*i<=n; ++i)
 		if (n % i == 0) {
 			while (n % i == 0)
 				n /= i;
@@ -41,22 +41,51 @@ int f_euler_rec(int n)
 	return result;
 }
 
+
+long binpow (long a, long n) {
+	long res = 1;
+	while (n) {
+		if (n & 1)
+			res = (res * a);
+		a = (a * a);
+		n >>= 1;
+	}
+	return res;
+}
+
+long powermod(long base, long exponent, long modulus) {
+    if (base < 1 || exponent < 0 || modulus < 1)
+        return -1;
+
+    long result = 1;
+    while (exponent > 0) {
+       if (exponent & 1) {
+           result = (result * base) % modulus;
+       }
+       base = (base * base) % modulus;
+       exponent >>= 1;
+    }
+    return result;
+}
+
+
 int main()
 {
-    int p, q, x0, k, r;
+    long p, q, x0, k, r;
     cin >> p >> q >> x0 >> k >> r;
 
     if((p < MAX) && (q < MAX) && (p % 4 == 3) && (q % 4 == 3) && (nod(f_euler_rec(p-1), f_euler_rec(q-1)) <= 3))
     {
         long m = p * q;
-        int array[8 * r];
-        int x = x0;
-        for(int i = 0; i < 8 * k; ++i)
-        {
-            x = (x * x) % m;
-        }
+        long array[8 * r];
+        long x = x0;
+        x = powermod(x0, binpow(2, 8 * k), m);
+        //for(long i = 0; i < 8 * k; ++i)
+        //{
+        //    x = (x * x) % m;
+        //}
 
-        for(int i = 8 * k; i < 8 * (k + r); ++i)
+        for(long i = 8 * k; i < 8 * (k + r); ++i)
         {
             array[i - 8 * k] = par(x);
             cout << array[i - 8 * k];
@@ -65,7 +94,7 @@ int main()
 
         cout << endl;
 
-        for(int i = 0; i < 8 * r; i += 4)
+        for(long i = 0; i < 8 * r; i += 4)
         {
             int code = (array[i] << 3) + (array[i + 1] << 2) + (array[i + 2] << 1) + array[i + 3];
             if (code >= 10)
