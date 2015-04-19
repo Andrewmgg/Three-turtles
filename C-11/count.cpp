@@ -6,11 +6,9 @@
 using namespace std;
 
 double stdC[26] = {8.17, 1.49, 2.78, 4.25, 12.7, 2.23, 2.02, 6.09, 6.97, 0.15, 0.77, 4.03, 2.41, 6.75, 7.51, 1.93, 0.01, 5.99, 6.33, 9.06, 2.76, 0.98, 2.36, 0.15, 1.97, 0.07};
-
 double cnt[26];
 
-void drawHex(unsigned char *c, int l)
-{
+void drawHex(unsigned char *c, int l) {
     string s = "";
     for (int i = 0; i < l; i++) {
         char lw = c[i] % 0x10;
@@ -54,8 +52,9 @@ string Vizener(char *s, int sL, unsigned char *key, int keyL) {
 
 double summ() {
     double s = 0;
-    for (int i = 0; i < 26; ++i)
+    for (int i = 0; i < 26; ++i) {
         s += abs(stdC[i] - cnt[i])*1000;
+    }
     return s;
 }
 
@@ -110,10 +109,8 @@ int main() {
     }
     
     //cout << maxL << endl;
-    
-    
-    
-    
+    keyL = maxL;
+
     // подбираем ключ
     unsigned char key[13];
     
@@ -134,6 +131,7 @@ int main() {
         double mins = 100500;
         char mK = 0;
         
+                
         for(int k = 0; k < 256; k++) {
             for(int j = 0; j < 26; j++)
                 cnt[j] = 0;
@@ -144,7 +142,7 @@ int main() {
                 if ( !isprint(c) ) goto label; // если хоть одна буква - непечатная, то ключ негодный
                 c = toupper(c);
                 if ( c >= 'A' && c <= 'Z' )
-                    cnt[ c-'A' ] += 100.0 / (double)stL;
+                    cnt[ c-'A' ] += 100.0 / ((double)stL / (double)keyL);
             }
                 
             c = summ();
@@ -155,6 +153,7 @@ int main() {
         label: if (0) {}
         }
         
+            
         //cout << mK << endl;
         key[i] = mK;
         
@@ -162,12 +161,7 @@ int main() {
     delete a;
 
     unsigned char key2[7] = {0xBA, 0x1F, 0x91, 0xB2, 0x53, 0xCD, 0x3E};
-    for (int i = 0; i < 14; i+=2) {
-        //key2[i/2] = (int)h2c(key1[i])*16 + h2c(key1[i+1]);
-    }
-    
     drawHex(key, 7);
-    //drawHex(key2, 7);
     cout << Vizener(st, stL, key, keyL);
     
     delete st;
