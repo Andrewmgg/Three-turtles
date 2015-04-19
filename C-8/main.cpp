@@ -74,7 +74,7 @@ int main()
     long p, q, x0, k, r;
     cin >> p >> q >> x0 >> k >> r;
 
-    if((p < MAX) && (q < MAX) && (p % 4 == 3) && (q % 4 == 3) && (nod(f_euler_rec(p-1), f_euler_rec(q-1)) <= 4))//<=3
+    if(r!=0&&(p < MAX) && (q < MAX) && (p % 4 == 3) && (q % 4 == 3) && (nod(f_euler_rec(p-1), f_euler_rec(q-1)) <= 3))
     {
         unsigned long long m = p * q;
         unsigned char array[r];
